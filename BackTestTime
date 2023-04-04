@@ -1,1 +1,29 @@
+from google.colab import drive
+drive.mount("/content/gdrive")
 
+#importing libraries to read in MSFT and SPY files
+import pandas as pd
+pd.read_csv('/content/gdrive/My Drive/Colab Notebooks/MSFT.csv')
+
+#retrieving files
+from google.colab import files
+uploaded = files.upload()
+
+#reading in
+pd.read_csv("Losers.csv")
+
+
+#import backtrader as bt
+#define mean reversion strategy
+class MeanReversionStrategy(bt.Strategy):
+    params = (
+        ('rsi_period', 14),
+        ('ema_period', 50),
+        ('rsi_low', 20),
+        ('ema_sell', 1.05),
+        ('stop_loss', 0.85),
+    )
+def __init__(self):
+        self.rsi = bt.indicators.RSI(period=self.params.rsi_period)
+        self.ema = bt.indicators.ExponentialMovingAverage(period=self.params.ema_period)
+        self.buy_price = None
